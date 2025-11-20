@@ -100,18 +100,13 @@ def add_timestamp(df):
 
 
 def compute_speed(df):
-    df['timestamp'] = pd.to_datetime(df['time_rmc'], format='%H%M%S', errors='coerce')
-    df = df.dropna(subset=['timestamp'])
-    df = df.sort_values('timestamp').reset_index(drop=True)
-
-    speeds = [0]
-    for i in range(1, len(df)):
-        prev = (df.loc[i-1, 'latitude'], df.loc[i-1, 'longitude'])
-        curr = (df.loc[i, 'latitude'], df.loc[i, 'longitude'])
-        distance_m = geodesic(prev, curr).meters
-        time_s = (df.loc[i, 'timestamp'] - df.loc[i-1, 'timestamp']).total_seconds()
-        speeds.append(distance_m / time_s if time_s > 0 else 0)
-
+    speeds = [0.0]
+    for i in range(1,len(df)):
+        prev = (df.loc[i-1,'latitude'], df.loc[i-1,'longitude'])
+        curr = (df.loc[i,'latitude'], df.loc[i,'longitude'])
+        dt = (df.loc[i,'timestamp'] - df.loc[i-1,'timestamp']).total_seconds()
+        dist = geodesic(prev,curr).meters
+        speeds.append(dist/dt if dt>0 else 0)
     df['speed_m_s'] = speeds
     return df
 
