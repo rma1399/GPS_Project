@@ -176,9 +176,10 @@ def export_kml(df, stops, left_turns, filename='route.kml'):
         p.style.iconstyle.color = simplekml.Color.red
         p.style.iconstyle.scale = 1.3
 
+    #this implements the left turn funcitonality
     for _, l in left_turns.iterrows():
         p = kml.newpoint(name=f'Left Turn!', coords=[(l['lon'], l['lat'], FIX_ALTITUDE_M)])
-        p.style.iconstyle.color = simplekml.Color.green
+        p.style.iconstyle.color = simplekml.Color.yellow
         p.style.iconstyle.scale = 1.3
 
 
