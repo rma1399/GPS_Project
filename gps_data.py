@@ -1,4 +1,4 @@
-#GPS project implementation by Ryan Ackerley &
+#GPS project implementation by Ryan Ackerley & Aidan Roullet
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
