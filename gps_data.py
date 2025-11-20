@@ -82,6 +82,30 @@ def merge_data(gprmc, gpgga):
     print(f"Merged rows: {len(merged)}")
     return merged
 
+def convert_to_decimal(row):
+    try:
+        lat_raw = row['lat_rmc']
+        lon_raw = row['lon_rmc']
+        lat_dir = row['lat_dir_rmc']
+        lon_dir = row['lon_dir_rmc']
+
+        lat = float(lat_raw[:2]) + float(lat_raw[2:]) / 60
+        lon = float(lon_raw[:3]) + float(lon_raw[3:]) / 60
+
+        if lat_dir == 'S':
+            lat = -lat
+        if lon_dir == 'W':
+            lon = -lon
+
+        return pd.Series([lat, lon])
+    except:
+        return pd.Series([np.nan, np.nan])
+
+def apply_conversion(df):
+    df[['latitude', 'longitude']] = df.apply(convert_to_decimal, axis=1)
+    df = df.dropna(subset=['latitude', 'longitude'])
+    return df
+
 def main():
 
     folder = 'gps_data'
