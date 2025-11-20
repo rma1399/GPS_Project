@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys
 import pathlib
+from datetime import datetime, timedelta
 
 
 # Tunable thresholds 
@@ -22,32 +23,47 @@ FIX_ALTITUDE_M = 3.0                 # altitude to use for KML points
 
 
 def clean_data(folder_filename):
-
     path = pathlib.Path(folder_filename)
-    cols_placeholder1 = range(13) #change these to whatever we choose to call them
-    cols_placeholder2 = range(15)
-   
-    GPMRC = pd.DataFrame(columns=cols_placeholder1)
-    GPGGA = pd.DataFrame(columns=cols_placeholder2)
-    
-    for file in path.glob("*.txt"): #grabs all text files in our directory we pass in
-        with open(file, 'r') as f: #there is mixed encoding, so we can not nicely read it into a csv by just skipping lines
-            content = f.read()
-            GPMRC_file = []
-            GPGGA_file = []
-            for line in content.split('$'): #not new line because some data is doubled
-                values = line.split(',')
-                if values[0] == 'GPRMC' and len(values) == 13: #majority expected length for MRC
-                    GPMRC_file.append(values)
-                elif values[0] == 'GPGGA' and len(values) == 15: #majority expected length for GGA
-                    GPGGA_file.append(values)
-            
-            GPMRC = pd.concat([GPMRC, pd.DataFrame(GPMRC_file, columns=cols_placeholder1)], ignore_index=True)
-            GPGGA = pd.concat([GPGGA, pd.DataFrame(GPGGA_file, columns=cols_placeholder2)], ignore_index=True)
 
-    GPMRC.to_csv('GPMRC_GPS_data.csv', index=False)
-    GPGGA.to_csv('GPGGA_GPS_data.csv', index=False)
-    return 0
+    # GPRMC columns
+    GPRMC_COLUMNS = [
+        "type_rmc", "time_rmc", "status_rmc", "lat_rmc", "lat_dir_rmc",
+        "lon_rmc", "lon_dir_rmc", "speed_knots_rmc", "track_deg_rmc",
+        "date_rmc", "mag_var_rmc", "mag_dir_rmc", "checksum_rmc"
+    ]
+
+    # GPGGA columns
+    GPGGA_COLUMNS = [
+        "type_gga", "time_gga", "lat_gga", "lat_dir_gga", "lon_gga",
+        "lon_dir_gga", "fix_quality_gga", "num_sats_gga", "hdop_gga",
+        "altitude_gga", "altitude_unit_gga", "geoid_sep_gga",
+        "geoid_unit_gga", "age_diff_gga", "checksum_gga"
+    ]
+
+    GPRMC_df = pd.DataFrame(columns=GPRMC_COLUMNS)
+    GPGGA_df = pd.DataFrame(columns=GPGGA_COLUMNS)
+
+    for file in path.glob("*.txt"):
+        with open(file, 'r') as f:
+            content = f.read()
+            GPRMC_file = []
+            GPGGA_file = []
+            for line in content.split('$'):
+                values = line.strip().split(',')
+                if len(values) == 13 and values[0] == 'GPRMC':
+                    GPRMC_file.append(values)
+                elif len(values) == 15 and values[0] == 'GPGGA':
+                    GPGGA_file.append(values)
+
+            if GPRMC_file:
+                GPRMC_df = pd.concat([GPRMC_df, pd.DataFrame(GPRMC_file, columns=GPRMC_COLUMNS)], ignore_index=True)
+            if GPGGA_file:
+                GPGGA_df = pd.concat([GPGGA_df, pd.DataFrame(GPGGA_file, columns=GPGGA_COLUMNS)], ignore_index=True)
+
+    # Save cleaned CSVs
+    GPRMC_df.to_csv('GPRMC_clean.csv', index=False)
+    GPGGA_df.to_csv('GPGGA_clean.csv', index=False)
+    return GPRMC_df, GPGGA_df
 
 
 def main():
@@ -59,4 +75,7 @@ def main():
 
     return 0
 
-main()
+
+
+if __name__ == "__main__":
+    main()
