@@ -110,7 +110,20 @@ def compute_speed(df):
     df['speed_m_s'] = speeds
     return df
 
-
+def detect_stops(df):
+    df['is_slow'] = df['speed_m_s'] <= STOP_SPEED_MS
+    df['slow_group'] = (df['is_slow'] != df['is_slow'].shift()).cumsum()
+    slow_groups = df[df['is_slow']].groupby('slow_group').agg(
+        start_time=('timestamp','first'),
+        end_time=('timestamp','last'),
+        lat=('latitude','first'),
+        lon=('longitude','first'),
+        n_points=('timestamp','count')
+    )
+    slow_groups['duration_s'] = (slow_groups['end_time']-slow_groups['start_time']).dt.total_seconds()
+    stops = slow_groups[(slow_groups['duration_s']>=STOP_MIN_DURATION_S) & 
+                        (slow_groups['duration_s']<=STOP_MAX_DURATION_S)].reset_index(drop=True)
+    return stops
 
 def main():
 
