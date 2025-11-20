@@ -11,6 +11,7 @@ import simplekml
 
 # Tunable thresholds 
 MIN_MOVING_SPEED_MS = 0.5            # below this we consider "not moving"
+MIN_MOVING_SPEED_MS_LEFT = 0.5       # below this we consider "not moving"
 STOP_SPEED_MS = 0.5                  # speed considered a stop
 STOP_MIN_DURATION_S = 2.0            # minimum seconds stopped to consider a stop event
 STOP_MAX_DURATION_S = 300.0          # max seconds of a "stop" to mark (parked longer is ignored)
@@ -18,7 +19,8 @@ OUTLIER_MAX_JUMP_M = 200.0           # if jump between consecutive points > this
 OUTLIER_MAX_SPEED_MS = 60.0          # If computed speed between points > this, treat as outlier
 DUPLICATE_DIST_M = 1.0               # if two consecutive points are within this distance, treat as duplicate
 HEADING_VALID_SPEED_MS = 1.0         # heading is meaningful only above this speed
-LEFT_TURN_MIN_DEG = 45.0             # minimum signed change (negative) to be considered a left turn
+LEFT_TURN_MIN_DEG = 25.0             # minimum signed change (negative) to be considered a left turn
+LEFT_TURN_MAX_DEG = 120.0            # maximum signed change (negative) to be considered a left turn
 LEFT_TURN_WINDOW = 5                 # number of points on either side when computing turn
 MAX_POINTS_PER_TRACK = 10000         # split LineString if exceeded
 FIX_ALTITUDE_M = 3.0                 # altitude to use for KML points
@@ -56,12 +58,23 @@ def clean_data(folder_filename):
                 GPGGA_df = pd.concat([GPGGA_df, pd.DataFrame(GPGGA_file, columns=GPGGA_COLUMNS + ['source_file'])], ignore_index=True)
     return GPRMC_df, GPGGA_df
 
+def parse_nmea_time(t):
+    if pd.isna(t):
+        return pd.NaT
+    t = f"{t:09.3f}" 
+    hh = int(t[0:2])
+    mm = int(t[2:4])
+    ss = float(t[4:])
+    return pd.to_timedelta(f"{hh:02d}:{mm:02d}:{ss:06.3f}") #simple pandas delta converter for explicitness
+
 def merge_data(gprmc, gpgga):
-    gprmc['time_rmc'] = pd.to_numeric(gprmc['time_rmc'], errors='coerce')
-    gpgga['time_gga'] = pd.to_numeric(gpgga['time_gga'], errors='coerce')
+    gprmc['time'] = gprmc['time_rmc'].astype(float).apply(parse_nmea_time)
+    gpgga['time'] = gpgga['time_gga'].astype(float).apply(parse_nmea_time)
     gprmc = gprmc.dropna(subset=['time_rmc'])
     gpgga = gpgga.dropna(subset=['time_gga'])
-    merged = pd.merge(gprmc,gpgga,left_on='time_rmc',right_on='time_gga',how='inner')
+    gprmc = gprmc.sort_values('time')
+    gpgga = gpgga.sort_values('time')
+    merged = pd.merge_asof(gprmc,gpgga,on='time',direction='nearest',tolerance=pd.Timedelta('0.5s')) #changed this so merge works better
     return merged
 
 def convert_to_decimal(row):
@@ -125,6 +138,29 @@ def detect_stops(df):
                         (slow_groups['duration_s']<=STOP_MAX_DURATION_S)].reset_index(drop=True)
     return stops
 
+def detect_left_turns(df):
+
+    df['track_deg'] = df['track_deg_rmc'].astype(float) #first convert to float type explicitly
+    df['delta_track'] = df['track_deg'].diff().fillna(0) #then calculate the difference change from the previous
+    df['rolling_angle_change'] = df['delta_track'].rolling(LEFT_TURN_WINDOW, min_periods=1).median() #then look at it through a rolling window, grabbing the median will help eliminate jumps
+    df['curv'] = df['rolling_angle_change'].rolling(LEFT_TURN_WINDOW, min_periods=1).sum() #you can then sum data to find the expected curvature
+
+    #evaluate from here for left turns, and then group together using another rolling window
+    df['is_left'] = (df['curv'] < -LEFT_TURN_MIN_DEG) & (df['curv'] > -LEFT_TURN_MAX_DEG) & (df['speed_m_s'] > MIN_MOVING_SPEED_MS_LEFT)
+    df['is_left'] = df['is_left'].rolling(LEFT_TURN_WINDOW, min_periods=1).max().astype(bool)
+    df['left_groups'] = (df['is_left'] != df['is_left'].shift()).cumsum() #group creation
+    left_turns = df[df['is_left']].groupby('left_groups').agg(
+        start_time=('timestamp','first'),
+        end_time=('timestamp','last'),
+        lat=('latitude','first'),
+        lon=('longitude','first'),
+        n_points=('timestamp','count')
+    )
+
+    #print(left_turns['n_points'])
+    left_turns = left_turns[left_turns['n_points'] >= 8] #filter for too small groups, this too can be tuned
+    return left_turns
+
 def export_kml(df, stops, left_turns, filename='route.kml'):
     kml = simplekml.Kml()
     
@@ -136,11 +172,15 @@ def export_kml(df, stops, left_turns, filename='route.kml'):
 
     # Stops go here
     for _, s in stops.iterrows():
-        p = kml.newpoint(name=f"Stop {s['duration_s']:.1f}s", coords=[(s['lon'], s['lat'], FIX_ALTITUDE_M)])
+        p = kml.newpoint(name=f"Stopped {s['duration_s']:.1f}s", coords=[(s['lon'], s['lat'], FIX_ALTITUDE_M)])
         p.style.iconstyle.color = simplekml.Color.red
         p.style.iconstyle.scale = 1.3
 
-    # Left turns go here
+    for _, l in left_turns.iterrows():
+        p = kml.newpoint(name=f'Left Turn!', coords=[(l['lon'], l['lat'], FIX_ALTITUDE_M)])
+        p.style.iconstyle.color = simplekml.Color.green
+        p.style.iconstyle.scale = 1.3
+
 
 
     kml.save(filename)
@@ -159,11 +199,10 @@ def process_file(file_path):
     df = compute_speed(df)
 
     stops = detect_stops(df)
-    
-    # left turns go here
+    left_turns = detect_left_turns(df) #can be tuned more
 
     kml_filename = file_path.stem + ".kml"
-    export_kml(df, stops, None, filename=kml_filename)
+    export_kml(df, stops, left_turns, filename=kml_filename)
     print(f"Processed {file_path.name}: {len(df)} points, {len(stops)} stops.") 
 
 
