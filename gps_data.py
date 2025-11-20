@@ -125,14 +125,52 @@ def detect_stops(df):
                         (slow_groups['duration_s']<=STOP_MAX_DURATION_S)].reset_index(drop=True)
     return stops
 
+def export_kml(df, stops, left_turns, filename='route.kml'):
+    kml = simplekml.Kml()
+    
+    # Full path line
+    coords = [(lon, lat, FIX_ALTITUDE_M) for lat, lon in zip(df['latitude'], df['longitude'])]
+    ls = kml.newlinestring(name='Route', coords=coords)
+    ls.style.linestyle.color = simplekml.Color.yellow
+    ls.style.linestyle.width = 3
+
+    # Stops go here
+    for _, s in stops.iterrows():
+        p = kml.newpoint(name=f"Stop {s['duration_s']:.1f}s", coords=[(s['lon'], s['lat'], FIX_ALTITUDE_M)])
+        p.style.iconstyle.color = simplekml.Color.red
+        p.style.iconstyle.scale = 1.3
+
+    # Left turns go here
+
+
+    kml.save(filename)
+    print(f"KML saved: {filename}")
+
+
+
+def process_file(file_path):
+    gprmc, gpgga = clean_data(file_path.parent)
+    gprmc_file = gprmc[gprmc['source_file']==file_path.name].copy()
+    gpgga_file = gpgga[gpgga['source_file']==file_path.name].copy()
+
+    df = merge_data(gprmc_file, gpgga_file)
+    df = apply_conversion(df)
+    df = add_timestamp(df)
+    df = compute_speed(df)
+
+    stops = detect_stops(df)
+    
+    # left turns go here
+
+    kml_filename = file_path.stem + ".kml"
+    export_kml(df, stops, None, filename=kml_filename)
+    print(f"Processed {file_path.name}: {len(df)} points, {len(stops)} stops.") 
+
+
 def main():
-
-    folder = 'gps_data'
-
-    gprmc, gpgga = clean_data(folder)
-    df = merge_data(gprmc, gpgga)
-
-
+    folder = pathlib.Path('gps_data')
+    for file_path in folder.glob("*.txt"):
+        process_file(file_path)
     return 0
 
 
