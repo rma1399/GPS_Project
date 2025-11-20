@@ -57,20 +57,11 @@ def clean_data(folder_filename):
     return GPRMC_df, GPGGA_df
 
 def merge_data(gprmc, gpgga):
-    # Merge on closest timestamp
     gprmc['time_rmc'] = pd.to_numeric(gprmc['time_rmc'], errors='coerce')
     gpgga['time_gga'] = pd.to_numeric(gpgga['time_gga'], errors='coerce')
-
     gprmc = gprmc.dropna(subset=['time_rmc'])
     gpgga = gpgga.dropna(subset=['time_gga'])
-
-    merged = pd.merge(
-        gprmc, gpgga,
-        left_on='time_rmc', right_on='time_gga',
-        how='inner', suffixes=('_rmc', '_gga')
-    )
-
-    print(f"Merged rows: {len(merged)}")
+    merged = pd.merge(gprmc,gpgga,left_on='time_rmc',right_on='time_gga',how='inner')
     return merged
 
 def convert_to_decimal(row):
