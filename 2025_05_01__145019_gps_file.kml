@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+    <Document id="1">
+        <Style id="4">
+            <LineStyle id="5">
+                <color>ff00ffff</color>
+                <colorMode>normal</colorMode>
+                <width>3</width>
+            </LineStyle>
+        </Style>
+        <Style id="8">
+            <IconStyle id="9">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <scale>1.3</scale>
+                <heading>0</heading>
+                <Icon id="10">
+                    <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Style id="13">
+            <IconStyle id="14">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <scale>1.3</scale>
+                <heading>0</heading>
+                <Icon id="15">
+                    <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Style id="18">
+            <IconStyle id="19">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <scale>1.3</scale>
+                <heading>0</heading>
+                <Icon id="20">
+                    <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Placemark id="3">
+            <name>Route</name>
+            <styleUrl>#4</styleUrl>
+            <LineString id="2">
+                <coordinates>-77.440605,43.141225,3.0 -77.44060666666667,43.14122666666667,3.0 -77.44062333333333,43.141236666666664,3.0 -77.440625,43.141238333333334,3.0 -77.44064833333333,43.141255,3.0 -77.44065166666667,43.14125666666666,3.0 -77.44067,43.14127166666667,3.0 -77.44067166666666,43.14127333333333,3.0 -77.463895,43.13712,3.0 -77.463895,43.13712,3.0 -77.46389,43.137096666666665,3.0 -77.46389,43.137096666666665,3.0 -77.46409166666666,43.13163,3.0 -77.46409,43.131631666666664,3.0 -77.46408166666667,43.13165333333333,3.0 -77.46408333333333,43.13165333333333,3.0 -77.464105,43.13163333333333,3.0 -77.464105,43.13162666666667,3.0 -77.46410166666666,43.13158833333333,3.0 -77.46410333333333,43.13159666666667,3.0 -77.46410333333333,43.13160666666667,3.0 -77.46410333333333,43.131616666666666,3.0 -77.4641,43.13157666666667,3.0 -77.47547666666667,43.130316666666666,3.0 -77.47547666666667,43.130316666666666,3.0 -77.54797833333333,43.116825,3.0 -77.54797833333333,43.11682666666667,3.0 -77.60342833333333,43.09525166666667,3.0 -77.60343,43.095255,3.0 -77.603445,43.09527833333333,3.0 -77.603445,43.09527833333333,3.0 -77.603455,43.09528,3.0 -77.60345666666667,43.09527833333333,3.0 -77.61329333333333,43.094935,3.0 -77.61328833333333,43.09493333333333,3.0 -77.61326833333334,43.094925,3.0 -77.61326833333334,43.094926666666666,3.0 -77.68078833333334,43.08575666666667,3.0 -77.68078833333334,43.08575833333333,3.0</coordinates>
+            </LineString>
+        </Placemark>
+        <Placemark id="7">
+            <name>Stop 14.0s</name>
+            <styleUrl>#8</styleUrl>
+            <Point id="6">
+                <coordinates>-77.463895,43.13712,3.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="12">
+            <name>Stop 40.0s</name>
+            <styleUrl>#13</styleUrl>
+            <Point id="11">
+                <coordinates>-77.46409,43.131631666666664,3.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="17">
+            <name>Stop 3.0s</name>
+            <styleUrl>#18</styleUrl>
+            <Point id="16">
+                <coordinates>-77.603445,43.09527833333333,3.0</coordinates>
+            </Point>
+        </Placemark>
+    </Document>
+</kml>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+    <Document id="206">
+        <Style id="209">
+            <LineStyle id="210">
+                <color>ff00ffff</color>
+                <colorMode>normal</colorMode>
+                <width>3</width>
+            </LineStyle>
+        </Style>
+        <Style id="213">
+            <IconStyle id="214">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <scale>1.3</scale>
+                <heading>0</heading>
+                <Icon id="215">
+                    <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Style id="218">
+            <IconStyle id="219">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <scale>1.3</scale>
+                <heading>0</heading>
+                <Icon id="220">
+                    <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Style id="223">
+            <IconStyle id="224">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <scale>1.3</scale>
+                <heading>0</heading>
+                <Icon id="225">
+                    <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Style id="228">
+            <IconStyle id="229">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <scale>1.3</scale>
+                <heading>0</heading>
+                <Icon id="230">
+                    <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Style id="233">
+            <IconStyle id="234">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <scale>1.3</scale>
+                <heading>0</heading>
+                <Icon id="235">
+                    <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Placemark id="208">
+            <name>Route</name>
+            <styleUrl>#209</styleUrl>
+            <LineString id="207">
+                <coordinates>-77.68024666666666,43.08575666666667,3.0 -77.68025,43.085755,3.0 -77.68027166666667,43.08575166666667,3.0 -77.68027166666667,43.08575166666667,3.0 -77.68029,43.085771666666666,3.0 -77.68029166666666,43.085773333333336,3.0 -77.68033666666666,43.08577,3.0 -77.680345,43.085773333333336,3.0 -77.68036,43.08577666666667,3.0 -77.68036666666667,43.08578333333333,3.0 -77.65386333333333,43.09281166666667,3.0 -77.65386333333333,43.09281166666667,3.0 -77.65387833333334,43.09283,3.0 -77.65387833333334,43.09283166666667,3.0 -77.65389166666667,43.09285166666667,3.0 -77.65389333333333,43.09285166666667,3.0 -77.65391166666667,43.09287666666667,3.0 -77.65391166666667,43.09287666666667,3.0 -77.65392333333334,43.0929,3.0 -77.65392333333334,43.0929,3.0 -77.65392833333334,43.092925,3.0 -77.65392833333334,43.092925,3.0 -77.63324,43.09394833333333,3.0 -77.633265,43.09395166666667,3.0 -77.63329,43.09395833333333,3.0 -77.61372333333334,43.09469833333333,3.0 -77.61372666666666,43.094696666666664,3.0 -77.61375,43.0947,3.0 -77.61375,43.0947,3.0 -77.606255,43.095005,3.0 -77.606255,43.095005,3.0 -77.60623666666666,43.09500666666667,3.0 -77.60623333333334,43.09500833333333,3.0 -77.60623833333334,43.09500333333333,3.0 -77.60624,43.09500333333333,3.0 -77.58205666666667,43.09583833333333,3.0 -77.58205666666667,43.09583833333333,3.0 -77.58208166666667,43.09587833333333,3.0 -77.58208166666667,43.09587833333333,3.0 -77.57665,43.10587833333334,3.0 -77.57665166666666,43.10587833333334,3.0 -77.55148833333334,43.113951666666665,3.0 -77.55148833333334,43.11395,3.0 -77.44107,43.14112166666666,3.0 -77.44107,43.14112166666666,3.0 -77.44109,43.14114333333333,3.0 -77.437725,43.138333333333335,3.0 -77.43772833333334,43.138331666666666,3.0</coordinates>
+            </LineString>
+        </Placemark>
+        <Placemark id="212">
+            <name>Stop 8.0s</name>
+            <styleUrl>#213</styleUrl>
+            <Point id="211">
+                <coordinates>-77.68029166666666,43.085773333333336,3.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="217">
+            <name>Stop 51.0s</name>
+            <styleUrl>#218</styleUrl>
+            <Point id="216">
+                <coordinates>-77.65386333333333,43.09281166666667,3.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="222">
+            <name>Stop 11.0s</name>
+            <styleUrl>#223</styleUrl>
+            <Point id="221">
+                <coordinates>-77.633265,43.09395166666667,3.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="227">
+            <name>Stop 22.0s</name>
+            <styleUrl>#228</styleUrl>
+            <Point id="226">
+                <coordinates>-77.58205666666667,43.09583833333333,3.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="232">
+            <name>Stop 16.0s</name>
+            <styleUrl>#233</styleUrl>
+            <Point id="231">
+                <coordinates>-77.44107,43.14112166666666,3.0</coordinates>
+            </Point>
+        </Placemark>
+    </Document>
+</kml>

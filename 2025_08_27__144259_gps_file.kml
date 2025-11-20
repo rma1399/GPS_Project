@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+    <Document id="81">
+        <Style id="84">
+            <LineStyle id="85">
+                <color>ff00ffff</color>
+                <colorMode>normal</colorMode>
+                <width>3</width>
+            </LineStyle>
+        </Style>
+        <Placemark id="83">
+            <name>Route</name>
+            <styleUrl>#84</styleUrl>
+            <LineString id="82">
+                <coordinates>-77.58623333333334,43.09574,3.0 -77.58623,43.09574,3.0 -77.52825833333333,43.127185,3.0 -77.52825833333333,43.127183333333335,3.0</coordinates>
+            </LineString>
+        </Placemark>
+    </Document>
+</kml>

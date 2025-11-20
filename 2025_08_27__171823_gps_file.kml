@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+    <Document id="87">
+        <Style id="90">
+            <LineStyle id="91">
+                <color>ff00ffff</color>
+                <colorMode>normal</colorMode>
+                <width>3</width>
+            </LineStyle>
+        </Style>
+        <Style id="94">
+            <IconStyle id="95">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <scale>1.3</scale>
+                <heading>0</heading>
+                <Icon id="96">
+                    <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Placemark id="89">
+            <name>Route</name>
+            <styleUrl>#90</styleUrl>
+            <LineString id="88">
+                <coordinates>-77.43775166666667,43.138513333333336,3.0 -77.43775,43.13851666666667,3.0 -77.43773333333333,43.13854,3.0 -77.43773166666666,43.13854333333333,3.0 -77.43773,43.13854833333333,3.0 -77.43772833333334,43.138551666666665,3.0 -77.437725,43.138556666666666,3.0 -77.43772166666666,43.13856166666667,3.0 -77.43771833333334,43.138565,3.0 -77.43770333333333,43.138575,3.0 -77.43770666666667,43.13857333333333,3.0 -77.43771,43.138571666666664,3.0 -77.437715,43.13856833333333,3.0 -77.4377,43.138576666666665,3.0 -77.44057333333333,43.141175,3.0 -77.440575,43.14117666666667,3.0 -77.61315666666667,43.09486666666667,3.0 -77.68087833333334,43.08568666666667,3.0 -77.68087833333334,43.08568666666667,3.0 -77.68089833333333,43.08569833333333,3.0 -77.68089833333333,43.0857,3.0</coordinates>
+            </LineString>
+        </Placemark>
+        <Placemark id="93">
+            <name>Stop 6.0s</name>
+            <styleUrl>#94</styleUrl>
+            <Point id="92">
+                <coordinates>-77.68087833333334,43.08568666666667,3.0</coordinates>
+            </Point>
+        </Placemark>
+    </Document>
+</kml>
