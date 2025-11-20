@@ -80,6 +80,25 @@ def apply_conversion(df):
     df[['latitude','longitude']] = df.apply(convert_to_decimal, axis=1)
     return df.dropna(subset=['latitude','longitude']) # Drop where nan
 
+def parse_rmc_datetime(time_str, date_str):
+    try:
+        t = float(time_str)
+        hh = int(t // 10000)
+        mm = int((t % 10000) // 100)
+        ss = int(t % 100)
+        day = int(date_str[:2])
+        month = int(date_str[2:4])
+        year = 2000 + int(date_str[4:6])
+        return datetime(year,month,day,hh,mm,ss)
+    except:
+        return None
+
+def add_timestamp(df):
+    df['timestamp'] = [parse_rmc_datetime(t,d) for t,d in zip(df['time_rmc'], df['date_rmc'])]
+    df = df.dropna(subset=['timestamp']).sort_values('timestamp').reset_index(drop=True)
+    return df
+
+
 def compute_speed(df):
     df['timestamp'] = pd.to_datetime(df['time_rmc'], format='%H%M%S', errors='coerce')
     df = df.dropna(subset=['timestamp'])
