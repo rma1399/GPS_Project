@@ -10,16 +10,16 @@ import simplekml
 
 
 # Tunable thresholds 
-MIN_MOVING_SPEED_MS = 0.5            # below this we consider "not moving"
-STOP_SPEED_MS = 0.5                  # speed considered a stop
-STOP_MIN_DURATION_S = 2.0            # minimum seconds stopped to consider a stop event
+MIN_MOVING_SPEED_MS = 0.3            # below this we consider "not moving"
+STOP_SPEED_MS = 0.7                  # speed considered a stop
+STOP_MIN_DURATION_S = 3.0            # minimum seconds stopped to consider a stop event
 STOP_MAX_DURATION_S = 300.0          # max seconds of a "stop" to mark (parked longer is ignored)
-OUTLIER_MAX_JUMP_M = 200.0           # if jump between consecutive points > this, discard point as outlier
+OUTLIER_MAX_JUMP_M = 400.0           # if jump between consecutive points > this, discard point as outlier
 OUTLIER_MAX_SPEED_MS = 60.0          # If computed speed between points > this, treat as outlier
-DUPLICATE_DIST_M = 1.0               # if two consecutive points are within this distance, treat as duplicate
-HEADING_VALID_SPEED_MS = 1.0         # heading is meaningful only above this speed
+DUPLICATE_DIST_M = 0.5               # if two consecutive points are within this distance, treat as duplicate
+HEADING_VALID_SPEED_MS = 0.5         # heading is meaningful only above this speed
 LEFT_TURN_MIN_DEG = 45.0             # minimum signed change (negative) to be considered a left turn
-LEFT_TURN_WINDOW = 5                 # number of points on either side when computing turn
+LEFT_TURN_WINDOW = 5                  # number of points on either side when computing turn
 MAX_POINTS_PER_TRACK = 10000         # split LineString if exceeded
 FIX_ALTITUDE_M = 3.0                 # altitude to use for KML points
 
