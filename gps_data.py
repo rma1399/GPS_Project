@@ -6,6 +6,8 @@ import sys
 import pathlib
 from datetime import datetime, timedelta
 from geopy.distance import geodesic
+import simplekml
+
 
 # Tunable thresholds 
 MIN_MOVING_SPEED_MS = 0.5            # below this we consider "not moving"
@@ -24,45 +26,34 @@ FIX_ALTITUDE_M = 3.0                 # altitude to use for KML points
 
 def clean_data(folder_filename):
     path = pathlib.Path(folder_filename)
+    GPRMC_COLUMNS = ["type_rmc","time_rmc","status_rmc","lat_rmc","lat_dir_rmc",
+                     "lon_rmc","lon_dir_rmc","speed_knots_rmc","track_deg_rmc",
+                     "date_rmc","mag_var_rmc","mag_dir_rmc","checksum_rmc"]
 
-    # GPRMC columns
-    GPRMC_COLUMNS = [
-        "type_rmc", "time_rmc", "status_rmc", "lat_rmc", "lat_dir_rmc",
-        "lon_rmc", "lon_dir_rmc", "speed_knots_rmc", "track_deg_rmc",
-        "date_rmc", "mag_var_rmc", "mag_dir_rmc", "checksum_rmc"
-    ]
+    GPGGA_COLUMNS = ["type_gga","time_gga","lat_gga","lat_dir_gga","lon_gga",
+                     "lon_dir_gga","fix_quality_gga","num_sats_gga","hdop_gga",
+                     "altitude_gga","altitude_unit_gga","geoid_sep_gga",
+                     "geoid_unit_gga","age_diff_gga","checksum_gga"]
 
-    # GPGGA columns
-    GPGGA_COLUMNS = [
-        "type_gga", "time_gga", "lat_gga", "lat_dir_gga", "lon_gga",
-        "lon_dir_gga", "fix_quality_gga", "num_sats_gga", "hdop_gga",
-        "altitude_gga", "altitude_unit_gga", "geoid_sep_gga",
-        "geoid_unit_gga", "age_diff_gga", "checksum_gga"
-    ]
-
-    GPRMC_df = pd.DataFrame(columns=GPRMC_COLUMNS)
-    GPGGA_df = pd.DataFrame(columns=GPGGA_COLUMNS)
+    GPRMC_df = pd.DataFrame(columns=GPRMC_COLUMNS + ['source_file'])
+    GPGGA_df = pd.DataFrame(columns=GPGGA_COLUMNS + ['source_file'])
 
     for file in path.glob("*.txt"):
         with open(file, 'r') as f:
             content = f.read()
-            GPRMC_file = []
-            GPGGA_file = []
+            GPRMC_file, GPGGA_file = [], []
             for line in content.split('$'):
                 values = line.strip().split(',')
-                if len(values) == 13 and values[0] == 'GPRMC':
+                if len(values) == 13 and values[0]=='GPRMC':
+                    values.append(file.name)
                     GPRMC_file.append(values)
-                elif len(values) == 15 and values[0] == 'GPGGA':
+                elif len(values)==15 and values[0]=='GPGGA':
+                    values.append(file.name)
                     GPGGA_file.append(values)
-
             if GPRMC_file:
-                GPRMC_df = pd.concat([GPRMC_df, pd.DataFrame(GPRMC_file, columns=GPRMC_COLUMNS)], ignore_index=True)
+                GPRMC_df = pd.concat([GPRMC_df, pd.DataFrame(GPRMC_file, columns=GPRMC_COLUMNS + ['source_file'])], ignore_index=True)
             if GPGGA_file:
-                GPGGA_df = pd.concat([GPGGA_df, pd.DataFrame(GPGGA_file, columns=GPGGA_COLUMNS)], ignore_index=True)
-
-    # Save cleaned CSVs
-    GPRMC_df.to_csv('GPRMC_clean.csv', index=False)
-    GPGGA_df.to_csv('GPGGA_clean.csv', index=False)
+                GPGGA_df = pd.concat([GPGGA_df, pd.DataFrame(GPGGA_file, columns=GPGGA_COLUMNS + ['source_file'])], ignore_index=True)
     return GPRMC_df, GPGGA_df
 
 def merge_data(gprmc, gpgga):
