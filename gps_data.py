@@ -20,7 +20,7 @@ DUPLICATE_DIST_M = 0.5               # if two consecutive points are within this
 HEADING_VALID_SPEED_MS = 0.5         # heading is meaningful only above this speed
 LEFT_TURN_MIN_DEG = 25.0             # minimum signed change (negative) to be considered a left turn
 LEFT_TURN_MAX_DEG = 140.0            # max signed change (negative) to be considered a left turn
-LEFT_TURN_WINDOW = 4                 # number of points on either side when computing turn
+LEFT_TURN_WINDOW = 10                 # number of points on either side when computing turn
 MAX_POINTS_PER_TRACK = 10000         # split LineString if exceeded
 FIX_ALTITUDE_M = 3.0                 # altitude to use for KML points
 
