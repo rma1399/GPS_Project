@@ -27,6 +27,10 @@ FIX_ALTITUDE_M = 3.0                 # altitude to use for KML points
 
 
 def clean_data(folder_filename):
+    """
+    Reads all .txt GPS files in a folder and parses NMEA GPRMC and GPGGA sentences.
+    Returns two DataFrames: one for RMC and one for GGA data.
+    """
     path = pathlib.Path(folder_filename)
     GPRMC_COLUMNS = ["type_rmc","time_rmc","status_rmc","lat_rmc","lat_dir_rmc",
                      "lon_rmc","lon_dir_rmc","speed_knots_rmc","track_deg_rmc",
@@ -59,6 +63,10 @@ def clean_data(folder_filename):
     return GPRMC_df, GPGGA_df
 
 def parse_nmea_time(t):
+    """
+    Converts NMEA time format (hhmmss.sss) into pandas Timedelta.
+    Returns NaT if input is NaN.
+    """
     if pd.isna(t):
         return pd.NaT
     t = f"{t:09.3f}" 
@@ -68,6 +76,10 @@ def parse_nmea_time(t):
     return pd.to_timedelta(f"{hh:02d}:{mm:02d}:{ss:06.3f}") #simple pandas delta converter for explicitness
 
 def merge_data(gprmc, gpgga):
+    """
+    Merges GPRMC and GPGGA DataFrames on the nearest timestamp (within 0.5s).
+    Also converts times to pandas Timedelta for merging.
+    """
     gprmc['time'] = gprmc['time_rmc'].astype(float).apply(parse_nmea_time)
     gpgga['time'] = gpgga['time_gga'].astype(float).apply(parse_nmea_time)
     gprmc = gprmc.dropna(subset=['time_rmc'])
@@ -78,6 +90,11 @@ def merge_data(gprmc, gpgga):
     return merged
 
 def convert_to_decimal(row):
+    """
+    Converts NMEA latitude and longitude (ddmm.mmmm) to decimal degrees.
+    Accounts for N/S and E/W hemispheres.
+    Returns NaN if conversion fails.
+    """
     try:
         lat_raw, lon_raw = row['lat_rmc'], row['lon_rmc']
         lat_dir, lon_dir = row['lat_dir_rmc'], row['lon_dir_rmc']
@@ -90,10 +107,18 @@ def convert_to_decimal(row):
         return pd.Series([np.nan, np.nan])
 
 def apply_conversion(df):
+    """
+    Applies convert_to_decimal to DataFrame, adding 'latitude' and 'longitude' columns.
+    Drops rows where conversion fails.
+    """
     df[['latitude','longitude']] = df.apply(convert_to_decimal, axis=1)
     return df.dropna(subset=['latitude','longitude']) # Drop where nan
 
 def parse_rmc_datetime(time_str, date_str):
+    """
+    Converts RMC date/time strings into a Python datetime object.
+    Returns None if parsing fails.
+    """
     try:
         t = float(time_str)
         hh = int(t // 10000)
@@ -107,12 +132,20 @@ def parse_rmc_datetime(time_str, date_str):
         return None
 
 def add_timestamp(df):
+    """
+    Adds a 'timestamp' column to the DataFrame based on RMC date/time.
+    Sorts by timestamp and drops rows with invalid timestamps.
+    """
     df['timestamp'] = [parse_rmc_datetime(t,d) for t,d in zip(df['time_rmc'], df['date_rmc'])]
     df = df.dropna(subset=['timestamp']).sort_values('timestamp').reset_index(drop=True)
     return df
 
 
 def compute_speed(df):
+    """
+    Computes speed (m/s) between consecutive points using geodesic distance.
+    Adds 'speed_m_s' column to DataFrame.
+    """
     speeds = [0.0]
     for i in range(1,len(df)):
         prev = (df.loc[i-1,'latitude'], df.loc[i-1,'longitude'])
@@ -124,6 +157,10 @@ def compute_speed(df):
     return df
 
 def detect_stops(df):
+    """
+    Detects stop events based on speed below STOP_SPEED_MS and duration thresholds.
+    Returns a DataFrame of stops with start/end time, location, and duration.
+    """
     df['is_slow'] = df['speed_m_s'] <= STOP_SPEED_MS
     df['slow_group'] = (df['is_slow'] != df['is_slow'].shift()).cumsum()
     slow_groups = df[df['is_slow']].groupby('slow_group').agg(
@@ -162,6 +199,9 @@ def detect_left_turns(df):
     return left_turns
 
 def export_kml(df, stops, left_turns, filename='route.kml'):
+    """
+    Exports route, stops, and left turns to a KML file for visualization.
+    """
     kml = simplekml.Kml()
     
     # Full path line
@@ -190,6 +230,10 @@ def export_kml(df, stops, left_turns, filename='route.kml'):
 
 
 def process_file(file_path):
+    """
+    Processes a single GPS .txt file: cleans data, merges, converts coordinates,
+    computes speeds, detects stops and left turns, and exports a KML file.
+    """
     gprmc, gpgga = clean_data(file_path.parent)
     gprmc_file = gprmc[gprmc['source_file']==file_path.name].copy()
     gpgga_file = gpgga[gpgga['source_file']==file_path.name].copy()
@@ -204,7 +248,7 @@ def process_file(file_path):
 
     kml_filename = file_path.stem + ".kml"
     export_kml(df, stops, left_turns, filename=kml_filename)
-    print(f"Processed {file_path.name}: {len(df)} points, {len(stops)} stops.") 
+    print(f"Processed {file_path.name}: {len(df)} points, {len(stops)} stops, {len(left_turns)} left turns.") 
 
 
 def main():
