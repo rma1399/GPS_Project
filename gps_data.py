@@ -2,7 +2,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import sys
 import pathlib
 from datetime import datetime, timedelta
 from geopy.distance import geodesic
@@ -11,7 +10,7 @@ import simplekml
 
 # Tunable thresholds 
 MIN_MOVING_SPEED_MS = 0.3            # below this we consider "not moving"
-MIN_MOVING_SPEED_MS_LEFT = 0.5       # below this we consider "not moving"
+MIN_MOVING_SPEED_MS_LEFT = 0.2       # below this we consider "not moving"
 STOP_SPEED_MS = 0.7                  # speed considered a stop
 STOP_MIN_DURATION_S = 3.0            # minimum seconds stopped to consider a stop event
 STOP_MAX_DURATION_S = 300.0          # max seconds of a "stop" to mark (parked longer is ignored)
@@ -20,7 +19,7 @@ OUTLIER_MAX_SPEED_MS = 60.0          # If computed speed between points > this, 
 DUPLICATE_DIST_M = 0.5               # if two consecutive points are within this distance, treat as duplicate
 HEADING_VALID_SPEED_MS = 0.5         # heading is meaningful only above this speed
 LEFT_TURN_MIN_DEG = 25.0             # minimum signed change (negative) to be considered a left turn
-LEFT_TURN_MAX_DEG = 120.0            # max signed change (negative) to be considered a left turn
+LEFT_TURN_MAX_DEG = 140.0            # max signed change (negative) to be considered a left turn
 LEFT_TURN_WINDOW = 4                 # number of points on either side when computing turn
 MAX_POINTS_PER_TRACK = 10000         # split LineString if exceeded
 FIX_ALTITUDE_M = 3.0                 # altitude to use for KML points
@@ -40,16 +39,16 @@ def clean_data(folder_filename):
     GPRMC_df = pd.DataFrame(columns=GPRMC_COLUMNS + ['source_file'])
     GPGGA_df = pd.DataFrame(columns=GPGGA_COLUMNS + ['source_file'])
 
-    for file in path.glob("*.txt"):
-        with open(file, 'r') as f:
+    for file in path.glob("*.txt"): #grabs every text file in our directory
+        with open(file, 'r') as f: #mixed codes require us to do this manually
             content = f.read()
             GPRMC_file, GPGGA_file = [], []
-            for line in content.split('$'):
+            for line in content.split('$'): #cant split on newline because some entries are doubled
                 values = line.strip().split(',')
-                if len(values) == 13 and values[0]=='GPRMC':
+                if len(values) == 13 and values[0]=='GPRMC': #expected length check
                     values.append(file.name)
                     GPRMC_file.append(values)
-                elif len(values)==15 and values[0]=='GPGGA':
+                elif len(values)==15 and values[0]=='GPGGA': #expected length check
                     values.append(file.name)
                     GPGGA_file.append(values)
             if GPRMC_file:
@@ -69,7 +68,7 @@ def parse_nmea_time(t):
 
 def merge_data(gprmc, gpgga):
     gprmc['time'] = gprmc['time_rmc'].astype(float).apply(parse_nmea_time)
-    gpgga['time'] = gpgga['time_gga'].astype(float).apply(parse_nmea_time)
+    gpgga['time'] = gpgga['time_gga'].astype(float).apply(parse_nmea_time) #grabs the time and applies our parsing function
     gprmc = gprmc.dropna(subset=['time_rmc'])
     gpgga = gpgga.dropna(subset=['time_gga'])
     gprmc = gprmc.sort_values('time')
@@ -141,12 +140,13 @@ def detect_stops(df):
 def detect_left_turns(df):
 
     df['track_deg'] = df['track_deg_rmc'].astype(float) #first convert to float type explicitly
-    df['delta_track'] = df['track_deg'].diff().fillna(0) #then calculate the difference change from the previous
-    df['rolling_angle_change'] = df['delta_track'].rolling(LEFT_TURN_WINDOW, min_periods=1).median() #then look at it through a rolling window, grabbing the median will help eliminate jumps
+    #you wrap because diff doesnt implicit calculate the wrapping 
+    df['delta_track'] = (((df['track_deg'].diff()+180) % 360)-180).fillna(0) #then calculate the difference change from the previous
+    df['rolling_angle_change'] = df['delta_track'].rolling(LEFT_TURN_WINDOW, min_periods=1).mean() #then look at it through a rolling window, grabbing the median will help eliminate jumps
     df['curv'] = df['rolling_angle_change'].rolling(LEFT_TURN_WINDOW, min_periods=1).sum() #you can then sum data to find the expected curvature
 
     #evaluate from here for left turns, and then group together using another rolling window
-    df['is_left'] = (df['curv'] < -LEFT_TURN_MIN_DEG) & (df['curv'] > -LEFT_TURN_MAX_DEG) & (df['speed_m_s'] > MIN_MOVING_SPEED_MS_LEFT)
+    df['is_left'] = (df['curv'] < -LEFT_TURN_MIN_DEG) & (df['curv'] > -LEFT_TURN_MAX_DEG) # & (df['speed_m_s'] > MIN_MOVING_SPEED_MS_LEFT)
     df['is_left'] = df['is_left'].rolling(LEFT_TURN_WINDOW, min_periods=1).max().astype(bool)
     df['left_groups'] = (df['is_left'] != df['is_left'].shift()).cumsum() #group creation
     left_turns = df[df['is_left']].groupby('left_groups').agg(
@@ -200,7 +200,7 @@ def process_file(file_path):
     df = compute_speed(df)
 
     stops = detect_stops(df)
-    left_turns = detect_left_turns(df) #can be tuned more
+    left_turns = detect_left_turns(df) 
 
     kml_filename = file_path.stem + ".kml"
     export_kml(df, stops, left_turns, filename=kml_filename)

@@ -54,7 +54,7 @@
         </Style>
         <Style id="114">
             <IconStyle id="115">
-                <color>ff008000</color>
+                <color>ff0000ff</color>
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
@@ -65,7 +65,7 @@
         </Style>
         <Style id="119">
             <IconStyle id="120">
-                <color>ff008000</color>
+                <color>ff00ffff</color>
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
@@ -76,7 +76,7 @@
         </Style>
         <Style id="124">
             <IconStyle id="125">
-                <color>ff008000</color>
+                <color>ff00ffff</color>
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
@@ -87,7 +87,7 @@
         </Style>
         <Style id="129">
             <IconStyle id="130">
-                <color>ff008000</color>
+                <color>ff00ffff</color>
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
@@ -104,59 +104,59 @@
             </LineString>
         </Placemark>
         <Placemark id="93">
-            <name>Stopped 15.0s</name>
+            <name>Stopped 5.0s</name>
             <styleUrl>#94</styleUrl>
             <Point id="92">
-                <coordinates>-77.61143833333334,43.0948,3.0</coordinates>
+                <coordinates>-77.66588666666667,43.09244,3.0</coordinates>
             </Point>
         </Placemark>
         <Placemark id="98">
-            <name>Stopped 8.0s</name>
+            <name>Stopped 15.0s</name>
             <styleUrl>#99</styleUrl>
             <Point id="97">
-                <coordinates>-77.60359,43.095106666666666,3.0</coordinates>
+                <coordinates>-77.61143833333334,43.0948,3.0</coordinates>
             </Point>
         </Placemark>
         <Placemark id="103">
-            <name>Stopped 9.0s</name>
+            <name>Stopped 8.0s</name>
             <styleUrl>#104</styleUrl>
             <Point id="102">
-                <coordinates>-77.55156833333334,43.11382166666667,3.0</coordinates>
+                <coordinates>-77.60359,43.095106666666666,3.0</coordinates>
             </Point>
         </Placemark>
         <Placemark id="108">
-            <name>Stopped 4.0s</name>
+            <name>Stopped 9.0s</name>
             <styleUrl>#109</styleUrl>
             <Point id="107">
-                <coordinates>-77.43776,43.13838666666667,3.0</coordinates>
+                <coordinates>-77.55156833333334,43.11382166666667,3.0</coordinates>
             </Point>
         </Placemark>
         <Placemark id="113">
-            <name>Left Turn!</name>
+            <name>Stopped 4.0s</name>
             <styleUrl>#114</styleUrl>
             <Point id="112">
-                <coordinates>-77.674295,43.087585,3.0</coordinates>
+                <coordinates>-77.43776,43.13838666666667,3.0</coordinates>
             </Point>
         </Placemark>
         <Placemark id="118">
             <name>Left Turn!</name>
             <styleUrl>#119</styleUrl>
             <Point id="117">
-                <coordinates>-77.58181833333333,43.095945,3.0</coordinates>
+                <coordinates>-77.58179,43.09597333333333,3.0</coordinates>
             </Point>
         </Placemark>
         <Placemark id="123">
             <name>Left Turn!</name>
             <styleUrl>#124</styleUrl>
             <Point id="122">
-                <coordinates>-77.55137,43.114248333333336,3.0</coordinates>
+                <coordinates>-77.55132166666667,43.114175,3.0</coordinates>
             </Point>
         </Placemark>
         <Placemark id="128">
             <name>Left Turn!</name>
             <styleUrl>#129</styleUrl>
             <Point id="127">
-                <coordinates>-77.463875,43.131395,3.0</coordinates>
+                <coordinates>-77.46390833333334,43.13133666666667,3.0</coordinates>
             </Point>
         </Placemark>
     </Document>
