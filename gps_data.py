@@ -175,6 +175,10 @@ def detect_stops(df):
     return stops
 
 def detect_left_turns(df):
+    """
+    Detects left turns from the GPS Data. Uses a sliding window and normalized differencing calculations to find the expected curvature
+    of the turn, which it then groups and evaluates.
+    """
 
     df['track_deg'] = df['track_deg_rmc'].astype(float) #first convert to float type explicitly
     #you wrap because diff doesnt implicit calculate the wrapping 
