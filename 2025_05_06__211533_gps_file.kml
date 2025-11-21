@@ -54,7 +54,7 @@
         </Style>
         <Style id="377">
             <IconStyle id="378">
-                <color>ff0000ff</color>
+                <color>ff00ffff</color>
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
@@ -65,7 +65,7 @@
         </Style>
         <Style id="382">
             <IconStyle id="383">
-                <color>ff0000ff</color>
+                <color>ff00ffff</color>
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
@@ -76,7 +76,7 @@
         </Style>
         <Style id="387">
             <IconStyle id="388">
-                <color>ff0000ff</color>
+                <color>ff00ffff</color>
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
@@ -311,14 +311,14 @@
                 <coordinates>-77.66768666666667,43.089128333333335,3.0</coordinates>
             </Point>
         </Placemark>
-        <Placemark id="426">
+        <Placemark id="381">
             <name>Left Turn!</name>
             <styleUrl>#427</styleUrl>
             <Point id="425">
                 <coordinates>-77.65429333333333,43.09287833333333,3.0</coordinates>
             </Point>
         </Placemark>
-        <Placemark id="431">
+        <Placemark id="386">
             <name>Left Turn!</name>
             <styleUrl>#432</styleUrl>
             <Point id="430">

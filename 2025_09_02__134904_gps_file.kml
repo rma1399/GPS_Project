@@ -14,18 +14,18 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="733">
+                <Icon id="678">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
         </Style>
-        <Style id="736">
-            <IconStyle id="737">
+        <Style id="681">
+            <IconStyle id="682">
                 <color>ff0000ff</color>
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="738">
+                <Icon id="683">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -36,7 +36,7 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="743">
+                <Icon id="688">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -47,7 +47,7 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="748">
+                <Icon id="693">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -58,7 +58,7 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="753">
+                <Icon id="698">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -69,7 +69,7 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="758">
+                <Icon id="703">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -80,7 +80,7 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="763">
+                <Icon id="708">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -91,7 +91,7 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="768">
+                <Icon id="713">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -102,7 +102,7 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="773">
+                <Icon id="718">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -113,7 +113,7 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="778">
+                <Icon id="723">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -124,7 +124,7 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="783">
+                <Icon id="728">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -135,7 +135,7 @@
                 <colorMode>normal</colorMode>
                 <scale>1.3</scale>
                 <heading>0</heading>
-                <Icon id="788">
+                <Icon id="733">
                     <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
                 </Icon>
             </IconStyle>
@@ -294,14 +294,14 @@
                 <coordinates>-77.43779,43.13852333333333,3.0</coordinates>
             </Point>
         </Placemark>
-        <Placemark id="780">
+        <Placemark id="725">
             <name>Left Turn!</name>
             <styleUrl>#781</styleUrl>
             <Point id="779">
                 <coordinates>-77.439435,43.141015,3.0</coordinates>
             </Point>
         </Placemark>
-        <Placemark id="785">
+        <Placemark id="730">
             <name>Left Turn!</name>
             <styleUrl>#786</styleUrl>
             <Point id="784">
